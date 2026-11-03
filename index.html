@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KASIR JHOSEPH</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        :root {
+            --biru: #3B82F6;
+            --hijau: #10B981;
+            --kuning: #F59E0B;
+            --merah: #EF4444;
+            --gelap: #0F172A;
+            --kartu: #1E293B;
+            --teks: #F8FAFC;
+            --abu: #94A3B8;
+        }
+
+        body {
+            background: linear-gradient(135deg, #0F172A, #1E40AF);
+            min-height: 100vh;
+            color: var(--teks);
+        }
+
+        /* === HALAMAN LOGIN === */
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .login-box {
+            background: var(--kartu);
+            padding: 2rem;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-box h1 {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+        }
+
+        .form-group {
+            margin-bottom: 1rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--abu);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        /* ✅ TOMBOL MATA DI PALING POJOK KANAN */
+        .password-wrapper {
+            position: relative;
+            display: block;
+        }
+
+        .password-wrapper input {
+            width: 100%;
+            padding: 0.75rem 38px 0.75rem 0.75rem;
+            /* ruang kanan untuk tombol mata */
+            border: none;
+            border-radius: 6px;
+            background: #334155;
+            color: var(--teks);
+            font-size: 1rem;
+        }
+
+        .eye-btn {
+            position: absolute;
+            right: 12px;
+            /* ✅ Pojok kanan */
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            padding: 0;
+            line-height: 1;
+            z-index: 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 20px;
+            height: 20px;
+        }
+
+        input {
+            width: 100%;
+            padding: 0.75rem;
+            border: none;
+            border-radius: 6px;
+            background: #334155;
+            color: var(--teks);
+            font-size: 1rem;
+        }
+
+        button {
+            width: 100%;
+            padding: 0.85rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn-masuk {
+            background: var(--hijau);
+            color: white;
+            margin-top: 0.5rem;
+        }
+
+        .btn-masuk:hover {
+            background: #059669;
+        }
+
+        .error {
+            margin-top: 1rem;
+            color: var(--merah);
+            text-align: center;
+            display: none;
+            font-size: 0.9rem;
+        }
+
+        /* === HALAMAN UTAMA === */
+        .app-container {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 1.2rem;
+            display: none;
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 1.2rem;
+            font-size: 1.4rem;
+        }
+
+        .baris {
+            display: flex;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+            margin-bottom: 1rem;
+            align-items: flex-end;
+        }
+
+        .kelompok {
+            flex: 1;
+            min-width: 130px;
+        }
+
+        select,
+        .harga-tampil {
+            width: 100%;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 6px;
+            background: #334155;
+            color: var(--teks);
+            font-size: 0.95rem;
+        }
+
+        .harga-tampil {
+            color: #FDE047;
+            font-weight: 600;
+        }
+
+        .btn-tambah {
+            background: var(--kuning);
+            color: white;
+            width: auto;
+            padding: 0.7rem 1.2rem;
+        }
+
+        .btn-tambah:hover {
+            background: #D97706;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            background: var(--kartu);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th {
+            background: var(--biru);
+            padding: 0.7rem;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        td {
+            padding: 0.65rem;
+            border-bottom: 1px solid #475569;
+            font-size: 0.95rem;
+        }
+
+        tbody tr:hover {
+            background: #334155;
+            cursor: pointer;
+        }
+
+        tbody tr.selected {
+            background: #475569;
+        }
+
+        .total-besar {
+            text-align: right;
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #FBBF24;
+            margin: 0.5rem 0;
+        }
+
+        .kembalian {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #86EFAC;
+            margin: 0.5rem 0;
+        }
+
+        .btn-row {
+            display: flex;
+            gap: 0.7rem;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .btn-proses {
+            background: var(--hijau);
+            color: white;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .btn-proses:hover {
+            background: #059669;
+        }
+
+        .btn-hapus {
+            background: #EAB308;
+            color: white;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .btn-hapus:hover {
+            background: #CA8A04;
+        }
+
+        .btn-reset {
+            background: var(--merah);
+            color: white;
+            flex: 1;
+            min-width: 140px;
+        }
+
+        .btn-reset:hover {
+            background: #DC2626;
+        }
+
+        /* === MODAL STRUK === */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            justify-content: center;
+            align-items: center;
+            padding: 1rem;
+        }
+
+        .modal-box {
+            background: #FEF3C7;
+            color: #111827;
+            padding: 1.5rem;
+            border-radius: 8px;
+            max-width: 380px;
+            width: 100%;
+            font-family: 'Courier New', monospace;
+            white-space: pre-wrap;
+            font-size: 0.9rem;
+        }
+
+        .modal-bawah {
+            display: flex;
+            gap: 0.7rem;
+            margin-top: 1rem;
+            justify-content: flex-end;
+        }
+
+        .btn-cetak {
+            background: var(--biru);
+            color: white;
+            width: auto;
+            padding: 0.6rem 1rem;
+            font-size: 0.9rem;
+        }
+
+        .btn-tutup {
+            background: var(--abu);
+            color: white;
+            width: auto;
+            padding: 0.6rem 1rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- === HALAMAN LOGIN === -->
+    <div class="login-container" id="halLogin">
+        <div class="login-box">
+            <h1>🔐 LOGIN KASIR JHOSEPH</h1>
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="username" placeholder="Masukkan username">
+            </div>
+            <div class="form-group">
+                <label>Password</label>
+                <div class="password-wrapper">
+                    <input type="password" id="password" placeholder="Masukkan sandi...">
+                    <button type="button" class="eye-btn" id="btnMata">👁️</button>
+                </div>
+            </div>
+            <button type="button" class="btn-masuk" id="btnLogin">MASUK KE APLIKASI</button>
+            <p class="error" id="pesanError">⚠️ Username atau Password SALAH!</p>
+        </div>
+    </div>
+    <!-- === HALAMAN UTAMA === -->
+    <div class="app-container" id="halAplikasi">
+        <h1>🛒 KASIR JHOSEPH</h1>
+        <div class="baris">
+            <div class="kelompok">
+                <label>Pilih Barang</label>
+                <select id="pilihBarang"></select>
+            </div>
+            <div class="kelompok">
+                <label>Harga Satuan</label>
+                <div class="harga-tampil" id="tampilHarga">Rp 0</div>
+            </div>
+            <div class="kelompok">
+                <label>Jumlah</label>
+                <input type="number" id="jumlah" placeholder="0" min="1">
+            </div>
+            <button type="button" class="btn-tambah" id="btnTambah">TAMBAH</button>
+        </div>
+        <table id="tabelBelanja">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>Nama Barang</th>
+                    <th>Harga</th>
+                    <th>Jumlah</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody id="isiTabel"></tbody>
+        </table>
+        <div class="total-besar" id="tampilTotal">TOTAL SEMUA: Rp 0</div>
+        <div class="baris">
+            <div class="kelompok">
+                <label>Uang Dibayarkan</label>
+                <input type="number" id="uangBayar" placeholder="Masukkan uang">
+            </div>
+        </div>
+        <div class="kembalian" id="tampilKembali">KEMBALIAN: Rp 0</div>
+        <div class="btn-row">
+            <button type="button" class="btn-proses" id="btnProses">✅ PROSES BAYAR</button>
+            <button type="button" class="btn-hapus" id="btnHapus">🗑️ HAPUS BARIS</button>
+            <button type="button" class="btn-reset" id="btnReset">🔄 TRANSAKSI BARU</button>
+        </div>
+    </div>
+    <!-- === MODAL STRUK === -->
+    <div class="modal" id="modalStruk">
+        <div class="modal-box" id="isiStruk"></div>
+        <div class="modal-bawah">
+            <button type="button" class="btn-cetak" id="btnCetak">🖨️ CETAK</button>
+            <button type="button" class="btn-tutup" id="btnTutup">❌ TUTUP</button>
+        </div>
+    </div>
+    <script>
+        // === DATA ===
+        const USER_BENAR = "23May2007";
+        const PASS_BENAR = "JhosephLuahambowo";
+        const barang = [
+            {nama: "Cleo Mini", harga: 3000},
+            {nama: "Roti Bakar", harga: 5000},
+            {nama: "Es Krim", harga: 4000},
+            {nama: "Rokok Surya", harga: 27000},
+            {nama: "Roti Unibis", harga: 3500},
+            {nama: "Indomie Goreng", harga: 3500},
+            {nama: "Indomie Rebus", harga: 3500},
+            {nama: "Teh Botol Sosro", harga: 5000},
+            {nama: "Aqua Botol", harga: 4000},
+            {nama: "Biskuit Roma", harga: 6000},
+            {nama: "Susu Kental Manis", harga: 8000},
+            {nama: "Kopi Sachet", harga: 2000},
+            {nama: "Gula Pasir 1kg", harga: 14000},
+            {nama: "Telur 1 Butir", harga: 2500},
+            {nama: "Minyak Goreng 1L", harga: 18000}
+        ];
+        let keranjang = [];
+        let barisTerpilih = null;
+        // === FORMAT ANGKA ===
+        function formatAngka(angka) {
+            return new Intl.NumberFormat('id-ID').format(angka);
+        }
+        // === ISI PILIHAN BARANG ===
+        const pilihBarang = document.getElementById('pilihBarang');
+        barang.forEach((b, i) => {
+            let opt = document.createElement('option');
+            opt.value = i;
+            opt.textContent = b.nama;
+            pilihBarang.appendChild(opt);
+        });
+        // === UPDATE HARGA SAAT PILIH BARANG ===
+        pilihBarang.addEventListener('change', () => {
+            let idx = parseInt(pilihBarang.value);
+            document.getElementById('tampilHarga').textContent = 'Rp ' + formatAngka(barang[idx].harga);
+        });
+        document.getElementById('tampilHarga').textContent = 'Rp ' + formatAngka(barang[0].harga);
+        // === TAMPIL/SEMBUNYIKAN SANDI ===
+        const passInput = document.getElementById('password');
+        document.getElementById('btnMata').addEventListener('click', () => {
+            passInput.type = passInput.type === 'password' ? 'text' : 'password';
+        });
+        // === LOGIN ===
+        document.getElementById('btnLogin').addEventListener('click', () => {
+            let user = document.getElementById('username').value.trim();
+            let pass = document.getElementById('password').value.trim();
+            let pesanError = document.getElementById('pesanError');
+
+            if (user === USER_BENAR && pass === PASS_BENAR) {
+                pesanError.style.display = 'none';
+                document.getElementById('halLogin').style.display = 'none';
+                document.getElementById('halAplikasi').style.display = 'block';
+            } else {
+                pesanError.style.display = 'block';
+                document.getElementById('password').value = '';
+            }
+        });
+        // === HITUNG TOTAL ===
+        function hitungTotal() {
+            return keranjang.reduce((sum, item) => sum + item.subtotal, 0);
+        }
+        function updateTampilan() {
+            const tbody = document.getElementById('isiTabel');
+            tbody.innerHTML = '';
+            keranjang.forEach((item, i) => {
+                tbody.innerHTML += `
+            <tr data-index="${i}" class="${barisTerpilih === i ? 'selected' : ''}">
+                <td>${i + 1}</td>
+                <td>${item.nama}</td>
+                <td>Rp ${formatAngka(item.harga)}</td>
+                <td>${item.jumlah}</td>
+                <td>Rp ${formatAngka(item.subtotal)}</td>
+            </tr>
+        `;
+            });
+            document.getElementById('tampilTotal').textContent = 'TOTAL SEMUA: Rp ' + formatAngka(hitungTotal());
+        }
+        // === PILIH BARIS DI TABEL ===
+        document.getElementById('isiTabel').addEventListener('click', (e) => {
+            let tr = e.target.closest('tr');
+            if (tr) {
+                barisTerpilih = parseInt(tr.dataset.index);
+                updateTampilan();
+            }
+        });
+        // === TAMBAH BARANG ===
+        document.getElementById('btnTambah').addEventListener('click', () => {
+            let idx = parseInt(pilihBarang.value);
+            let jumlah = parseInt(document.getElementById('jumlah').value) || 0;
+
+            if (jumlah <= 0) {alert('Masukkan jumlah yang benar!'); return;}
+
+            keranjang.push({
+                nama: barang[idx].nama,
+                harga: barang[idx].harga,
+                jumlah: jumlah,
+                subtotal: barang[idx].harga * jumlah
+            });
+            document.getElementById('jumlah').value = '';
+            updateTampilan();
+        });
+        // === HAPUS BARIS ===
+        document.getElementById('btnHapus').addEventListener('click', () => {
+            if (barisTerpilih !== null) {
+                keranjang.splice(barisTerpilih, 1);
+                barisTerpilih = null;
+                updateTampilan();
+            } else {
+                alert('Pilih baris yang ingin dihapus dulu!');
+            }
+        });
+        // === PROSES BAYAR ===
+        document.getElementById('btnProses').addEventListener('click', () => {
+            if (keranjang.length === 0) {alert('⚠️ Belum ada barang di keranjang!'); return;}
+
+            let bayar = parseInt(document.getElementById('uangBayar').value) || 0;
+            let total = hitungTotal();
+
+            if (bayar <= 0) {alert('⚠️ Masukkan uang pembayaran!'); return;}
+            if (bayar < total) {
+                alert(`⚠️ Uang kurang!\nTotal: Rp ${formatAngka(total)}\nUang: Rp ${formatAngka(bayar)}`);
+                return;
+            }
+
+            let kembali = bayar - total;
+            document.getElementById('tampilKembali').textContent = 'KEMBALIAN: Rp ' + formatAngka(kembali);
+
+            let daftar = keranjang.map(i => `${i.nama.padEnd(18)} x${i.jumlah} = Rp ${formatAngka(i.subtotal)}`).join('\n');
+            let struk = `══════════════════════════
+STRUK BELANJA TOKO JHOSEPH
+══════════════════════════
+${daftar}
+──────────────────────────
+TOTAL SEMUA  : Rp ${formatAngka(total)}
+UANG BAYAR   : Rp ${formatAngka(bayar)}
+KEMBALIAN    : Rp ${formatAngka(kembali)}
+══════════════════════════
+    Terima Kasih! 💛
+`;
+            document.getElementById('isiStruk').textContent = struk;
+            document.getElementById('modalStruk').style.display = 'flex';
+        });
+        // === TUTUP STRUK ===
+        document.getElementById('btnTutup').addEventListener('click', () => {
+            document.getElementById('modalStruk').style.display = 'none';
+        });
+        // === CETAK STRUK ===
+        document.getElementById('btnCetak').addEventListener('click', () => {
+            let isi = document.getElementById('isiStruk').textContent;
+            let win = window.open('', '', 'width=400,height=500');
+            win.document.write(`<pre style="font-family:monospace; font-size:14px;">${isi}</pre>`);
+            win.document.close();
+            win.print();
+        });
+        // === RESET TRANSAKSI ===
+        document.getElementById('btnReset').addEventListener('click', () => {
+            keranjang = [];
+            barisTerpilih = null;
+            document.getElementById('uangBayar').value = '';
+            document.getElementById('tampilKembali').textContent = 'KEMBALIAN: Rp 0';
+            updateTampilan();
+        });
+    </script>
+</body>
+
+</html>
