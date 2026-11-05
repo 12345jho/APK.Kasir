@@ -612,9 +612,8 @@
             </div>
             <button type="button" class="btn-masuk" id="btnLogin">MASUK KE APLIKASI</button>
             <p class="error" id="pesanError">⚠️ Username atau Password salah!</p>
-            <div class="info-akun">
-            </div>
         </div>
+    </div>
     </div>
 
     <!-- APLIKASI UTAMA -->
@@ -1086,16 +1085,23 @@
         // Tombol CETAK STRUK — buka halaman preview print buatan kita
         document.getElementById('btnCetakFaktur').addEventListener('click', function () {
             const isi = document.getElementById('fakturIsi').textContent;
-            document.getElementById('printPreviewIsi').textContent = isi;
-            document.getElementById('printPreview').style.display = 'block';
-        });
-        // Di preview print: tombol CETAK SEKARANG — benar-benar print
-        document.getElementById('btnPrintSekarang').addEventListener('click', function () {
-            window.print();
-        });
-        // Di preview print: tombol TUTUP — balik ke halaman faktur
-        document.getElementById('btnTutupPreview').addEventListener('click', function () {
-            document.getElementById('printPreview').style.display = 'none';
+            // Buka jendela cetak baru (jalan di aplikasi desktop & browser)
+            const win = window.open('', 'cetakStruk', 'width=450,height=650');
+            if (!win) {alert('⚠️ Tidak bisa membuka jendela cetak. Coba lagi.'); return;}
+            win.document.write('<html><head><title>Cetak Struk - KASIR JHOSEPH</title></head>');
+            win.document.write('<body style="font-family:Courier New,monospace;font-size:14px;padding:20px;background:#FEF3C7;margin:0;">');
+            win.document.write('<pre style="white-space:pre-wrap;margin:0 0 20px 0;">' + isi + '</pre>');
+            win.document.write('<div style="position:fixed;bottom:0;left:0;right:0;background:#FEF3C7;padding:15px;border-top:2px dashed #999;text-align:center;font-family:Arial,sans-serif;">');
+            win.document.write('<button onclick="window.print()" style="padding:12px 30px;margin-right:10px;background:#10B981;color:white;border:none;border-radius:8px;cursor:pointer;font-size:15px;font-weight:bold;">🖨️ CETAK</button>');
+            win.document.write('<button onclick="window.close()" style="padding:12px 30px;background:#EF4444;color:white;border:none;border-radius:8px;cursor:pointer;font-size:15px;font-weight:bold;">❌ TUTUP</button>');
+            win.document.write('<p style="margin-top:8px;font-size:11px;color:#666;">Setelah selesai, klik TUTUP untuk kembali</p>');
+            win.document.write('</div>');
+            win.document.write('<div style="height:80px;"></div>');
+            win.document.write('</body></html>');
+            win.document.close();
+            win.focus();
+            // Auto print setelah jendela terbuka
+            setTimeout(function () {try {win.print();} catch (e) { } }, 500);
         });
 
         // ========== TAMPIL RIWAYAT ==========
